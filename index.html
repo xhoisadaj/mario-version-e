@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
 <title>Mario Services HVAC — Furnace &amp; AC Repair in Troy, MI | Comfort, Engineered</title>
 <meta name="description" content="Home comfort, precisely engineered. Furnace, AC, ductwork &amp; air quality systems installed by a licensed, insured crew with 15+ years in Michigan homes. Metro Detroit's HVAC pros.">
 <meta name="robots" content="index, follow">
@@ -113,6 +114,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
+    color-scheme:light;
     --void:#F7F5F1;
     --deep:#E8E2D6;
     --thermo-hi:#FCFAF6;
@@ -139,6 +141,7 @@
     --chrome-txt:#EAF0FA;
   }
   :root[data-theme="dark"]{
+    color-scheme:dark;
     --void:#12192A;
     --deep:#172138;
     --thermo-hi:#23304E;
@@ -925,8 +928,14 @@
   /* theme toggle */
   const themeToggle = document.getElementById('themeToggle');
   const themeToggleMenu = document.getElementById('themeToggleMenu');
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  function syncThemeColorMeta(){
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeColorMeta.setAttribute('content', isDark ? '#12192A' : '#F7F5F1');
+  }
   const savedTheme = localStorage.getItem('mario-theme');
   if(savedTheme === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+  syncThemeColorMeta();
   function toggleTheme(){
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     if(isDark){
@@ -936,6 +945,7 @@
       document.documentElement.setAttribute('data-theme','dark');
       localStorage.setItem('mario-theme','dark');
     }
+    syncThemeColorMeta();
   }
   themeToggle.addEventListener('click', toggleTheme);
   themeToggleMenu.addEventListener('click', toggleTheme);
