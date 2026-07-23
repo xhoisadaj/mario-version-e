@@ -6,7 +6,7 @@
 <title>Mario Services HVAC — Furnace &amp; AC Repair in Troy, MI | Comfort, Engineered</title>
 <meta name="description" content="Home comfort, precisely engineered. Furnace, AC, ductwork &amp; air quality systems installed by a licensed, insured crew with 15+ years in Michigan homes. Metro Detroit's HVAC pros.">
 <meta name="robots" content="index, follow">
-<meta name="theme-color" content="#070B14">
+<meta name="theme-color" content="#F7F5F1">
 <meta name="geo.region" content="US-MI">
 <meta name="geo.placename" content="Troy">
 <link rel="canonical" href="https://www.marioservicesmi.com/">
@@ -113,18 +113,52 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#070B14;
-    --deep:#0C1322;
-    --panel:rgba(255,255,255,0.045);
-    --panel-line:rgba(255,255,255,0.09);
-    --txt:#EAF0FA;
-    --dim:#8B96AB;
+    --void:#F7F5F1;
+    --deep:#E8E2D6;
+    --thermo-hi:#FCFAF6;
+    --panel:rgba(20,18,14,0.035);
+    --panel-line:rgba(20,18,14,0.10);
+    --panel-hover-bg:rgba(20,18,14,0.05);
+    --panel-hover-border:rgba(20,18,14,0.18);
+    --shimmer:rgba(20,18,14,0.15);
+    --track-stroke:rgba(20,18,14,0.12);
+    --divider:rgba(20,18,14,0.08);
+    --dot-inactive:rgba(20,18,14,0.18);
+    --txt:#1D2430;
+    --dim:#626C7A;
+    --header-bg:rgba(247,245,241,0.75);
+    --menu-bg:rgba(247,245,241,0.97);
+    --orb-opacity:0.35;
+    --thermo-shadow-a:0.22;
     --warm:#FF7A45;
     --warm-glow:rgba(255,122,69,0.35);
     --cool:#4DA3FF;
     --cool-glow:rgba(77,163,255,0.35);
     --mint:#3DDC97;
+    --chrome-bg:rgba(18,25,42,0.75);
+    --chrome-txt:#EAF0FA;
   }
+  :root[data-theme="dark"]{
+    --void:#12192A;
+    --deep:#172138;
+    --thermo-hi:#23304E;
+    --panel:rgba(255,255,255,0.045);
+    --panel-line:rgba(255,255,255,0.09);
+    --panel-hover-bg:rgba(255,255,255,0.07);
+    --panel-hover-border:rgba(255,255,255,0.2);
+    --shimmer:rgba(255,255,255,0.4);
+    --track-stroke:rgba(255,255,255,0.08);
+    --divider:rgba(255,255,255,0.05);
+    --dot-inactive:rgba(255,255,255,0.22);
+    --txt:#EAF0FA;
+    --dim:#8B96AB;
+    --header-bg:rgba(18,25,42,0.6);
+    --menu-bg:rgba(18,25,42,0.96);
+    --orb-opacity:0.55;
+    --thermo-shadow-a:0.8;
+  }
+  html{ transition:background 0.3s; }
+  body{ transition:background 0.3s, color 0.3s; }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{ scroll-behavior:smooth; }
   body{
@@ -144,7 +178,7 @@
   .reveal-stagger.in > *{ transition-delay:calc(var(--i,0)*100ms); }
 
   /* ambient glow orbs */
-  .orb{ position:fixed; border-radius:50%; filter:blur(110px); pointer-events:none; z-index:0; opacity:0.55; }
+  .orb{ position:fixed; border-radius:50%; filter:blur(110px); pointer-events:none; z-index:0; opacity:var(--orb-opacity); }
   .orb.a{ width:520px; height:520px; background:var(--warm-glow); top:-160px; left:-140px; animation:drift1 18s ease-in-out infinite; }
   .orb.b{ width:560px; height:560px; background:var(--cool-glow); bottom:-200px; right:-160px; animation:drift2 22s ease-in-out infinite; }
   @keyframes drift1{ 0%,100%{ transform:translate(0,0);} 50%{ transform:translate(60px,40px);} }
@@ -156,8 +190,9 @@
     position:fixed; top:0; left:0; right:0; z-index:300;
     backdrop-filter:blur(18px) saturate(150%);
     -webkit-backdrop-filter:blur(18px) saturate(150%);
-    background:rgba(7,11,20,0.6);
+    background:var(--header-bg);
     border-bottom:1px solid var(--panel-line);
+    transition:background 0.3s;
   }
   .nav{ display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:1240px; margin:0 auto; }
   .brand{ display:flex; align-items:center; gap:12px; font-family:'Sora'; font-weight:600; font-size:16px; }
@@ -179,17 +214,40 @@
   .glow-btn.cool{ background:linear-gradient(90deg, var(--cool), #7cbcff); box-shadow:0 0 28px var(--cool-glow), inset 0 1px 0 rgba(255,255,255,0.35); color:#0A1524; }
 
   /* burger */
+  .nav-actions{ display:flex; align-items:center; gap:10px; }
+  .theme-toggle{
+    display:flex; align-items:center; justify-content:center;
+    width:38px; height:38px; border-radius:50%; flex-shrink:0;
+    border:1px solid var(--panel-line); background:var(--panel); color:var(--txt);
+    cursor:pointer; transition:background 0.25s, border-color 0.25s, transform 0.3s;
+  }
+  .theme-toggle:hover{ transform:translateY(-2px) rotate(12deg); border-color:var(--panel-hover-border); }
+  .theme-toggle svg{ width:18px; height:18px; }
+  .theme-toggle .i-moon{ display:none; }
+  :root[data-theme="dark"] .theme-toggle .i-sun{ display:none; }
+  :root[data-theme="dark"] .theme-toggle .i-moon{ display:block; }
   .burger{ display:none; background:none; border:none; cursor:pointer; z-index:310; padding:6px; }
   .burger span{ display:block; width:25px; height:2px; background:var(--txt); margin:6px 0; border-radius:2px; transition:transform 0.35s cubic-bezier(.22,1,.36,1), opacity 0.25s; }
   .burger.open span:nth-child(1){ transform:translateY(8px) rotate(45deg); }
   .burger.open span:nth-child(2){ opacity:0; }
   .burger.open span:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
   .mobile-menu{
-    position:fixed; inset:0; z-index:290; background:rgba(7,11,20,0.96);
+    position:fixed; inset:0; z-index:290; background:var(--menu-bg);
     backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
-    display:flex; flex-direction:column; justify-content:center; align-items:center; gap:10px;
+    display:flex; flex-direction:column; justify-content:flex-start; align-items:center; gap:10px;
     opacity:0; pointer-events:none; transition:opacity 0.35s;
+    padding:calc(var(--header-h, 90px) + 16px) 24px 32px; overflow-y:auto;
   }
+  .theme-toggle-menu{
+    display:inline-flex; align-items:center; gap:8px; margin-top:6px;
+    border:1px solid var(--panel-line); background:var(--panel); color:var(--txt);
+    border-radius:99px; padding:11px 22px; font-size:14px; font-family:'Inter'; cursor:pointer;
+  }
+  .theme-toggle-menu svg{ width:16px; height:16px; flex-shrink:0; }
+  .theme-toggle-menu .tt-row{ display:inline-flex; align-items:center; gap:8px; }
+  .theme-toggle-menu .tt-dark{ display:none; }
+  :root[data-theme="dark"] .theme-toggle-menu .tt-light{ display:none; }
+  :root[data-theme="dark"] .theme-toggle-menu .tt-dark{ display:inline-flex; }
   .mobile-menu.open{ opacity:1; pointer-events:auto; }
   .mobile-menu nav{ display:flex; flex-direction:column; gap:4px; text-align:center; margin-bottom:34px; }
   .mobile-menu nav a{
@@ -224,9 +282,9 @@
   .thermo-wrap{ display:flex; justify-content:center; }
   .thermo{
     width:300px; height:300px; border-radius:50%; position:relative;
-    background:radial-gradient(circle at 30% 25%, #182238, var(--deep) 70%);
+    background:radial-gradient(circle at 30% 25%, var(--thermo-hi), var(--deep) 70%);
     border:1px solid var(--panel-line);
-    box-shadow:0 30px 80px -30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 90px var(--glow, var(--cool-glow));
+    box-shadow:0 30px 80px -30px rgba(0,0,0,var(--thermo-shadow-a)), inset 0 1px 0 var(--panel-hover-border), 0 0 90px var(--glow, var(--cool-glow));
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     cursor:grab; user-select:none; touch-action:none;
     transition:box-shadow 0.4s;
@@ -237,7 +295,7 @@
   .thermo .hint{ position:absolute; bottom:26px; font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--dim); opacity:0.7; animation:pulse 2.4s infinite; }
   .thermo svg{ position:absolute; inset:-8px; width:calc(100% + 16px); height:calc(100% + 16px); transform:rotate(-90deg); pointer-events:none; }
   .thermo svg circle{ fill:none; stroke-width:5; stroke-linecap:round; }
-  .thermo svg .track{ stroke:rgba(255,255,255,0.08); }
+  .thermo svg .track{ stroke:var(--track-stroke); }
   .thermo svg .prog{ stroke:url(#tempgrad); transition:stroke-dashoffset 0.15s linear; }
   .thermo-cap{ text-align:center; margin-top:26px; color:var(--dim); font-size:13.5px; }
   .thermo-cap b{ color:var(--txt); font-weight:500; }
@@ -258,12 +316,12 @@
   }
   .glass-card::before{
     content:''; position:absolute; top:0; left:0; right:0; height:1px;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    background:linear-gradient(90deg, transparent, var(--shimmer), transparent);
   }
-  .glass-card:hover{ transform:translateY(-8px); border-color:rgba(255,255,255,0.2); background:rgba(255,255,255,0.07); }
+  .glass-card:hover{ transform:translateY(-8px); border-color:var(--panel-hover-border); background:var(--panel-hover-bg); }
   .glass-card .ico{
     width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center;
-    margin-bottom:20px; background:rgba(255,255,255,0.06); border:1px solid var(--panel-line);
+    margin-bottom:20px; background:var(--panel-hover-bg); border:1px solid var(--panel-line);
   }
   .glass-card .ico svg{ width:23px; height:23px; }
   .glass-card.w .ico{ color:var(--warm); }
@@ -281,7 +339,7 @@
     padding:26px 24px; backdrop-filter:blur(12px);
     transition:border-color 0.35s, background 0.35s;
   }
-  .why-row:hover{ border-color:rgba(255,255,255,0.18); background:rgba(255,255,255,0.065); }
+  .why-row:hover{ border-color:var(--panel-hover-border); background:var(--panel-hover-bg); }
   .why-row .tick{
     flex-shrink:0; width:34px; height:34px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
@@ -299,7 +357,7 @@
   .areas-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px 20px; }
   .area{
     display:flex; align-items:center; gap:11px; font-size:14.5px; color:var(--txt);
-    padding:9px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+    padding:9px 0; border-bottom:1px solid var(--divider);
   }
   .area .dot{
     width:6px; height:6px; border-radius:50%; flex-shrink:0;
@@ -335,11 +393,11 @@
     transition:transform 0.4s cubic-bezier(.22,1,.36,1), border-color 0.35s, box-shadow 0.4s;
     display:block;
   }
-  .contact-card:hover{ transform:translateY(-6px); border-color:rgba(255,255,255,0.2); }
+  .contact-card:hover{ transform:translateY(-6px); border-color:var(--panel-hover-border); }
   .contact-card .cico{
     width:52px; height:52px; margin:0 auto 18px; border-radius:16px;
     display:flex; align-items:center; justify-content:center;
-    background:rgba(255,255,255,0.06); border:1px solid var(--panel-line);
+    background:var(--panel-hover-bg); border:1px solid var(--panel-line);
   }
   .contact-card .cico svg{ width:24px; height:24px; }
   .contact-card h3{ font-size:17px; margin-bottom:6px; font-weight:600; }
@@ -359,7 +417,7 @@
     transition:color 0.25s, border-color 0.25s, transform 0.3s;
   }
   .social-btn svg{ width:17px; height:17px; }
-  .social-btn:hover{ color:var(--txt); border-color:rgba(255,255,255,0.22); transform:translateY(-2px); }
+  .social-btn:hover{ color:var(--txt); border-color:var(--panel-hover-border); transform:translateY(-2px); }
 
   /* WORK — glass gallery carousel */
   .work-carousel{ position:relative; }
@@ -376,7 +434,7 @@
   .work-item:hover img{ transform:scale(1.05); opacity:1; }
   .work-item .cap{
     position:absolute; left:12px; bottom:12px;
-    background:rgba(7,11,20,0.75); backdrop-filter:blur(10px);
+    background:var(--chrome-bg); backdrop-filter:blur(10px); color:var(--chrome-txt);
     border:1px solid var(--panel-line); border-radius:99px;
     padding:7px 15px; font-size:12px; font-weight:500;
     opacity:0; transform:translateY(6px); transition:opacity 0.3s, transform 0.3s;
@@ -386,9 +444,9 @@
   .car-nav{
     position:absolute; top:50%; transform:translateY(-50%); z-index:5;
     width:46px; height:46px; border-radius:50%; cursor:pointer;
-    background:rgba(7,11,20,0.78); border:1px solid var(--panel-line);
+    background:var(--chrome-bg); border:1px solid var(--panel-line);
     backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-    display:flex; align-items:center; justify-content:center; color:var(--txt);
+    display:flex; align-items:center; justify-content:center; color:var(--chrome-txt);
     transition:background 0.3s, border-color 0.3s, transform 0.3s, opacity 0.3s;
   }
   .car-nav svg{ width:19px; height:19px; }
@@ -399,7 +457,7 @@
   .car-dots{ display:flex; gap:9px; justify-content:center; margin-top:26px; }
   .car-dot{
     width:9px; height:9px; border-radius:99px; cursor:pointer; padding:0;
-    background:rgba(255,255,255,0.22); border:none;
+    background:var(--dot-inactive); border:none;
     transition:width 0.35s cubic-bezier(.22,1,.36,1), background 0.3s;
   }
   .car-dot.on{ width:30px; background:linear-gradient(90deg, var(--warm), var(--cool)); }
@@ -446,13 +504,18 @@
     nav.links{ display:none; }
     .desktop-only{ display:none; }
     .burger{ display:block; }
+    .theme-toggle{ display:none; }
     .brand-mark{ height:42px; }
     .partner-badge{ height:24px; padding-left:8px; }
     .hero{ padding:130px 0 80px; }
     .glass-grid{ grid-template-columns:1fr 1fr; }
     .work-grid{ grid-template-columns:1fr 1fr; grid-auto-rows:200px; }
     .work-item.big{ grid-row:auto; grid-column:span 2; }
-    .work-item .cap{ opacity:1; transform:none; }
+    .work-item .cap{
+      opacity:1; transform:none; border-radius:12px; font-size:11px;
+      padding:6px 11px; left:8px; right:8px; bottom:8px;
+      max-width:calc(100% - 16px); line-height:1.3; text-align:center;
+    }
     .car-nav.prev{ left:8px; }
     .car-nav.next{ right:8px; }
     .car-nav{ width:40px; height:40px; }
@@ -491,9 +554,15 @@
       <a href="#contact">Contact</a>
     </nav>
     <a class="glow-btn desktop-only" href="tel:2484040406">(248) 404-0406</a>
-    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -507,6 +576,16 @@
     <a href="#contact">Contact</a>
   </nav>
   <a class="glow-btn" href="tel:2484040406">Call (248) 404-0406</a>
+  <button class="theme-toggle-menu" id="themeToggleMenu" aria-label="Toggle dark mode">
+    <span class="tt-row tt-light">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      Switch to dark mode
+    </span>
+    <span class="tt-row tt-dark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      Switch to light mode
+    </span>
+  </button>
 </div>
 
 <main>
@@ -828,11 +907,38 @@
 </footer>
 
 <script>
+  /* keep mobile menu clear of the header, whatever height it wraps to */
+  function syncHeaderHeight(){
+    const h = document.querySelector('header');
+    if(h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
+  }
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+  window.addEventListener('load', syncHeaderHeight);
+
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold:0.12 });
   revealEls.forEach(el=>io.observe(el));
+
+  /* theme toggle */
+  const themeToggle = document.getElementById('themeToggle');
+  const themeToggleMenu = document.getElementById('themeToggleMenu');
+  const savedTheme = localStorage.getItem('mario-theme');
+  if(savedTheme === 'dark'){ document.documentElement.setAttribute('data-theme','dark'); }
+  function toggleTheme(){
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if(isDark){
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('mario-theme','light');
+    } else {
+      document.documentElement.setAttribute('data-theme','dark');
+      localStorage.setItem('mario-theme','dark');
+    }
+  }
+  themeToggle.addEventListener('click', toggleTheme);
+  themeToggleMenu.addEventListener('click', toggleTheme);
 
   /* burger */
   const burger = document.getElementById('burger');
